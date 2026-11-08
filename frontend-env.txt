@@ -1,0 +1,10 @@
+# SJBU Voting System - Frontend Backend Connection
+
+Create this file at:
+  C:\Users\banda\OneDrive\Desktop\New folder (2)\official-voting-system-frontend\web\.env
+
+REACT_APP_API_URL=http://localhost:3005/api/app
+
+# After creating this file, restart the frontend dev server:
+#   cd web
+#   npm run dev
