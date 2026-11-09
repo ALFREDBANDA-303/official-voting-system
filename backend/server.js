@@ -78,23 +78,53 @@ function seedData() {
     changed = true;
   }
   if (db.positions.length === 0) {
-    db.positions.push({ id: 1, name: 'President', created_at: new Date().toISOString() }, { id: 2, name: 'Vice President', created_at: new Date().toISOString() });
+    db.positions.push(
+      { id: 1, name: 'President', created_at: new Date().toISOString() },
+      { id: 2, name: 'Vice President', created_at: new Date().toISOString() },
+      { id: 3, name: 'General Secretary', created_at: new Date().toISOString() },
+      { id: 4, name: 'Speaker', created_at: new Date().toISOString() },
+      { id: 5, name: 'Finance Director', created_at: new Date().toISOString() },
+      { id: 6, name: 'Sports Director', created_at: new Date().toISOString() },
+      { id: 7, name: 'Entertainment Director', created_at: new Date().toISOString() }
+    );
     changed = true;
   }
   if (db.candidates.length === 0) {
     const cands = [
+      // President
       { id: 1, position_id: 1, name: 'Alice Reyes', image_url: 'https://via.placeholder.com/150', manifesto: 'Committed to student welfare.', created_at: new Date().toISOString() },
       { id: 2, position_id: 1, name: 'Bob Lim', image_url: 'https://via.placeholder.com/150', manifesto: 'Fighting for affordable tuition.', created_at: new Date().toISOString() },
       { id: 3, position_id: 1, name: 'Carla Dela Cruz', image_url: 'https://via.placeholder.com/150', manifesto: 'Focus on mental health.', created_at: new Date().toISOString() },
+      // Vice President
       { id: 4, position_id: 2, name: 'Diego Santos', image_url: 'https://via.placeholder.com/150', manifesto: 'Student voice advocate.', created_at: new Date().toISOString() },
       { id: 5, position_id: 2, name: 'Elena Gomez', image_url: 'https://via.placeholder.com/150', manifesto: 'Improving student organizations.', created_at: new Date().toISOString() },
       { id: 6, position_id: 2, name: 'Felix Rivera', image_url: 'https://via.placeholder.com/150', manifesto: 'Green campus initiatives.', created_at: new Date().toISOString() },
+      // General Secretary
+      { id: 7, position_id: 3, name: 'Grace Mwangi', image_url: 'https://via.placeholder.com/150', manifesto: 'Transparent record keeping and communication.', created_at: new Date().toISOString() },
+      { id: 8, position_id: 3, name: 'Henry Osei', image_url: 'https://via.placeholder.com/150', manifesto: 'Efficient documentation and reporting.', created_at: new Date().toISOString() },
+      { id: 9, position_id: 3, name: 'Irene Kato', image_url: 'https://via.placeholder.com/150', manifesto: 'Modernizing administrative processes.', created_at: new Date().toISOString() },
+      // Speaker
+      { id: 10, position_id: 4, name: 'Jack Njoroge', image_url: 'https://via.placeholder.com/150', manifesto: 'Fair and orderly house proceedings.', created_at: new Date().toISOString() },
+      { id: 11, position_id: 4, name: 'Karen Muchiri', image_url: 'https://via.placeholder.com/150', manifesto: 'Upholding parliamentary rules.', created_at: new Date().toISOString() },
+      { id: 12, position_id: 4, name: 'Larry Otieno', image_url: 'https://via.placeholder.com/150', manifesto: 'Impartial leadership of the house.', created_at: new Date().toISOString() },
+      // Finance Director
+      { id: 13, position_id: 5, name: 'Mary Wanjiku', image_url: 'https://via.placeholder.com/150', manifesto: 'Responsible budget management.', created_at: new Date().toISOString() },
+      { id: 14, position_id: 5, name: 'Nathan Kipruto', image_url: 'https://via.placeholder.com/150', manifesto: 'Financial accountability and audits.', created_at: new Date().toISOString() },
+      { id: 15, position_id: 5, name: 'Olivia Akinyi', image_url: 'https://via.placeholder.com/150', manifesto: 'Sustainable funding for student events.', created_at: new Date().toISOString() },
+      // Sports Director
+      { id: 16, position_id: 6, name: 'Peter Kamau', image_url: 'https://via.placeholder.com/150', manifesto: 'Upgrade sports facilities.', created_at: new Date().toISOString() },
+      { id: 17, position_id: 6, name: 'Quinter Adhiambo', image_url: 'https://via.placeholder.com/150', manifesto: 'More inter-school tournaments.', created_at: new Date().toISOString() },
+      { id: 18, position_id: 6, name: 'Robert Mburu', image_url: 'https://via.placeholder.com/150', manifesto: 'Fitness and wellness programs.', created_at: new Date().toISOString() },
+      // Entertainment Director
+      { id: 19, position_id: 7, name: 'Sarah Chelimo', image_url: 'https://via.placeholder.com/150', manifesto: 'Vibrant student events calendar.', created_at: new Date().toISOString() },
+      { id: 20, position_id: 7, name: 'Thomas Githinji', image_url: 'https://via.placeholder.com/150', manifesto: 'More cultural festivals and shows.', created_at: new Date().toISOString() },
+      { id: 21, position_id: 7, name: 'Upendo Mwende', image_url: 'https://via.placeholder.com/150', manifesto: 'Fun and inclusive entertainment.', created_at: new Date().toISOString() },
     ];
     db.candidates.push(...cands);
     changed = true;
   }
   if (db.voters.length === 0) {
-    for (let i = 1; i <= 5; i++) db.voters.push({ id: i, voucher_code: 'VOUCHER-0' + i, is_used: 0, voted_president: 0, voted_vice: 0, created_at: new Date().toISOString() });
+    for (let i = 1; i <= 5; i++) db.voters.push({ id: i, voucher_code: 'VOUCHER-00' + i, is_used: 0, voted_positions: [], created_at: new Date().toISOString() });
     changed = true;
   }
   if (db.admin_users.length === 0) {
@@ -194,29 +224,68 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, { success: true, voucher: b.voucher });
     }
 
+    // ===== USER LOGOUT =====
+    if (match(API_PREFIX + '/logout') && req.method === 'POST') {
+      return sendJson(res, 200, { success: true, message: 'Logged out' });
+    }
+
     // ===== VOTE =====
     if (match(API_PREFIX + '/vote') && req.method === 'POST') {
       const b = await readBody(req);
-      if (!b.voucher || !b.presidentCandidateId || !b.vicePresidentCandidateId) return sendJson(res, 400, { error: 'Missing fields' });
+      if (!b.voucher || !b.selections) return sendJson(res, 400, { error: 'Voucher and selections required' });
       const v = db.voters.find(x => x.voucher_code === b.voucher);
       if (!v) return sendJson(res, 401, { error: 'Invalid voucher code' });
-      if (v.voted_president || v.voted_vice) return sendJson(res, 409, { error: 'Already voted for a position' });
-      if (v.voted_president && v.voted_vice) return sendJson(res, 409, { error: 'Voucher fully used' });
+      if (v.is_used && v.voted_positions && v.voted_positions.length > 0) return sendJson(res, 409, { error: 'Voucher already used for voting' });
 
-      const pp = db.positions.find(p => p.name === 'President');
-      const vp = db.positions.find(p => p.name === 'Vice President');
-      const pc = db.candidates.find(c => c.id == b.presidentCandidateId && c.position_id === pp.id);
-      const vc = db.candidates.find(c => c.id == b.vicePresidentCandidateId && c.position_id === vp.id);
-      if (!pc) return sendJson(res, 400, { error: 'Invalid president candidate' });
-      if (!vc) return sendJson(res, 400, { error: 'Invalid vice president candidate' });
+      const selections = b.selections; // { positionId: candidateId, ... }
+      const positionIds = Object.keys(selections).map(Number);
+
+      // Validate all positions exist and candidates belong to those positions
+      for (const posId of positionIds) {
+        const position = db.positions.find(p => p.id === posId);
+        if (!position) return sendJson(res, 400, { error: 'Invalid position: ' + posId });
+        const candidateId = selections[posId];
+        const candidate = db.candidates.find(c => c.id == candidateId && c.position_id === posId);
+        if (!candidate) return sendJson(res, 400, { error: 'Invalid candidate for position: ' + posId });
+      }
 
       const code = generateVerificationCode();
       const now = new Date().toISOString();
-      db.votes.push({ id: db.votes.length + 1, voucher_code: b.voucher, position_id: pp.id, candidate_id: parseInt(b.presidentCandidateId), verification_code: code, created_at: now });
-      db.votes.push({ id: db.votes.length + 1, voucher_code: b.voucher, position_id: vp.id, candidate_id: parseInt(b.vicePresidentCandidateId), verification_code: code, created_at: now });
-      v.is_used = 1; v.voted_president = 1; v.voted_vice = 1;
+
+      for (const posId of positionIds) {
+        db.votes.push({ id: db.votes.length + 1, voucher_code: b.voucher, position_id: posId, candidate_id: parseInt(selections[posId]), verification_code: code, created_at: now });
+      }
+
+      v.is_used = 1;
+      v.voted_positions = positionIds;
       dirty = true;
-      return sendJson(res, 200, { data: { verificationCode: code, message: 'Vote recorded', presidentVote: { verification_code: code }, vicePresidentVote: { verification_code: code } } });
+
+      const voteResults = {};
+      for (const posId of positionIds) {
+        const position = db.positions.find(p => p.id === posId);
+        voteResults[position.name.toLowerCase().replace(/\s+/g, '_')] = { verification_code: code, candidate_id: parseInt(selections[posId]) };
+      }
+
+      return sendJson(res, 200, { data: { verificationCode: code, message: 'All votes recorded successfully', votes: voteResults } });
+    }
+
+    // ===== VOTE VERIFICATION =====
+    if (match(API_PREFIX + '/verify') && req.method === 'POST') {
+      const b = await readBody(req);
+      let results = [];
+      if (b.verification_code) {
+        results = db.votes.filter(v => v.verification_code === b.verification_code);
+      } else if (b.voucher) {
+        results = db.votes.filter(v => v.voucher_code === b.voucher);
+      } else {
+        return sendJson(res, 400, { status: 'error', error: 'Verification code or voucher required' });
+      }
+      if (results.length === 0) return sendJson(res, 404, { status: 'not_found', error: 'No matching vote found' });
+      return sendJson(res, 200, {
+        status: 'found',
+        vote: { id: results[0].id, voucher: results[0].voucher_code, candidate_id: results[0].candidate_id, position_id: results[0].position_id, verification_code: results[0].verification_code, voted_at: results[0].created_at },
+        votes: results.map(v => ({ id: v.id, voucher: v.voucher_code, candidate_id: v.candidate_id, position_id: v.position_id, verification_code: v.verification_code, voted_at: v.created_at }))
+      });
     }
 
     // ===== ADMIN SIGN-UP (mock) =====
@@ -232,6 +301,45 @@ const server = http.createServer(async (req, res) => {
       a.last_login = new Date().toISOString();
       dirty = true;
       return sendJson(res, 200, { admin: { id: a.id, username: a.username, role: a.role, email: a.email, isActive: a.is_active, lastLogin: a.last_login, createdAt: a.created_at } });
+    }
+
+    // ===== ADMIN - USER CRUD =====
+    // CREATE admin user
+    if (match(API_PREFIX + '/admin/create') && req.method === 'POST') {
+      const b = await readBody(req);
+      if (!b.username || !b.email || !b.password) return sendJson(res, 400, { error: 'Username, email and password required' });
+      if (db.admin_users.find(u => u.username === b.username || u.email === b.email)) return sendJson(res, 409, { error: 'User already exists' });
+      const id = db.admin_users.length > 0 ? Math.max(...db.admin_users.map(u => u.id)) + 1 : 1;
+      db.admin_users.push({ id, username: b.username, email: b.email, password_hash: hashPassword(b.password), role: b.role || 'moderator', is_active: 1, last_login: null, created_at: new Date().toISOString() });
+      dirty = true;
+      return sendJson(res, 201, { admin: { id, username: b.username, role: b.role || 'moderator', email: b.email, isActive: true, lastLogin: null, createdAt: new Date().toISOString() } });
+    }
+
+    // UPDATE user role (and optional password)
+    if (matchId(API_PREFIX + '/admin/users') && req.method === 'PUT') {
+      const id = parseInt(matchId(API_PREFIX + '/admin/users'));
+      const b = await readBody(req);
+      const u = db.admin_users.find(x => x.id === id);
+      if (!u) return sendJson(res, 404, { error: 'Admin user not found' });
+      if (b.role !== undefined) u.role = b.role;
+      if (b.password) u.password_hash = hashPassword(b.password);
+      dirty = true;
+      return sendJson(res, 200, { admin: { id: u.id, username: u.username, role: u.role, email: u.email, isActive: u.is_active, lastLogin: u.last_login, createdAt: u.created_at } });
+    }
+
+    // DEACTIVATE / reactivate user (soft delete)
+    if (matchId(API_PREFIX + '/admin/users') && req.method === 'DELETE') {
+      const id = parseInt(matchId(API_PREFIX + '/admin/users'));
+      const u = db.admin_users.find(x => x.id === id);
+      if (!u) return sendJson(res, 404, { error: 'Admin user not found' });
+      u.is_active = 0;
+      dirty = true;
+      return sendJson(res, 200, { success: true, message: 'Admin user deactivated' });
+    }
+
+    // ===== ADMIN LOGOUT =====
+    if (match(API_PREFIX + '/admin/logout') && req.method === 'POST') {
+      return sendJson(res, 200, { success: true, message: 'Admin logged out' });
     }
 
     // ===== ADMIN - POSITIONS CRUD =====

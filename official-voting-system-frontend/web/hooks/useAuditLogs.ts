@@ -1,6 +1,7 @@
 // web/hooks/useAuditLogs.ts
 
 import { useState, useEffect, useCallback } from 'react';
+import { isAxiosError } from 'axios';
 import sjbuApi from '../src/api/sjbuApi';
 import { AuditLogEntry } from '../types'; 
 
@@ -47,7 +48,7 @@ export const useAuditLogs = (): AuditLogState => {
 
         } catch (e) {
             let message = 'Failed to load audit logs.';
-            if (sjbuApi.isAxiosError(e) && e.response) {
+            if (isAxiosError(e) && e.response) {
                 if (e.response.status === 403) {
                      message = 'Insufficient permissions to view audit logs.';
                 } else if (e.response.status === 404) {

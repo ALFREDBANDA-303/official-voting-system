@@ -6,100 +6,84 @@
     <title>DMI-SJBU Voting System</title>
     <link rel="icon" href="/favicon.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          'dmi-blue': {
-            '50': '#f0f8ff',
-            '100': '#e0f0fe',
-            '200': '#c2e3fd',
-            '300': '#93d2fb',
-            '400': '#60baf8',
-            '500': '#3b9ef5',
-            '600': '#2580e5',
-            '700': '#1b66c4',
-            '800': '#1c54a0',
-            '900': '#1c477f',
-            '950': '#142c4c',
-          },
-          'dmi-gold': {
-            '500': '#FFC107'
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'dmi-blue': {
+                '50': '#f0f8ff',
+                '100': '#e0f0fe',
+                '200': '#c2e3fd',
+                '300': '#93d2fb',
+                '400': '#60baf8',
+                '500': '#3b9ef5',
+                '600': '#2580e5',
+                '700': '#1b66c4',
+                '800': '#1c54a0',
+                '900': '#1c477f',
+                '950': '#142c4c',
+              },
+              'dmi-gold': {
+                '500': '#FFC107'
+              }
+            },
+            fontSize: {
+              'xs-mobile': ['0.8125rem', { lineHeight: '1.2' }],
+              'sm-mobile': ['0.875rem', { lineHeight: '1.3' }],
+              'base-mobile': ['1rem', { lineHeight: '1.5' }],
+              'lg-mobile': ['1.125rem', { lineHeight: '1.6' }],
+              'xl-mobile': ['1.25rem', { lineHeight: '1.6' }],
+            },
+            spacing: {
+              '3.5': '0.875rem',
+              '4.5': '1.125rem',
+              '5.5': '1.375rem',
+            },
+            borderRadius: {
+              'btn': '0.75rem',
+              'card': '0.75rem',
+            },
+            minHeight: {
+              'touch': '48px',
+            },
+            container: {
+              center: true,
+              padding: {
+                DEFAULT: '1rem',
+                sm: '1.5rem',
+                lg: '2rem',
+                xl: '3rem',
+              },
+            },
+            boxShadow: {
+              'focus-ring': '0 0 0 4px rgba(59,158,245,0.12)',
+            },
+            animation: {
+              'fade-in-scale': 'fadeInScale 1.5s ease-out forwards',
+              'fade-in-delay': 'fadeIn 1.5s ease-out 0.5s forwards',
+              'pulse-subtle': 'pulseSubtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeInScale: {
+                '0%': { opacity: '0', transform: 'scale(0.8)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              pulseSubtle: {
+                '0%, 100%': { opacity: '1' },
+                '50%': { opacity: '0.6' },
+              }
+            }
           }
         },
-        // Mobile-first typography and spacing tokens
-        fontSize: {
-          'xs-mobile': ['0.8125rem', { lineHeight: '1.2' }],   // 13px
-          'sm-mobile': ['0.875rem', { lineHeight: '1.3' }],    // 14px
-          'base-mobile': ['1rem', { lineHeight: '1.5' }],      // 16px
-          'lg-mobile': ['1.125rem', { lineHeight: '1.6' }],    // 18px
-          'xl-mobile': ['1.25rem', { lineHeight: '1.6' }],     // 20px
-        },
-        spacing: {
-          '3.5': '0.875rem', // 14px
-          '4.5': '1.125rem', // 18px
-          '5.5': '1.375rem', // 22px
-        },
-        borderRadius: {
-          'btn': '0.75rem', // 12px for prominent rounded buttons
-          'card': '0.75rem',
-        },
-        // Small utility to ensure tappable controls
-        minHeight: {
-          'touch': '48px',
-        },
-        // Container settings for narrow mobile gutters and centered wider layout
-        container: {
-          center: true,
-          padding: {
-            DEFAULT: '1rem', // mobile horizontal padding
-            sm: '1.5rem',
-            lg: '2rem',
-            xl: '3rem',
-          },
-        },
-        // Subtle focus ring token for accessibility
-        boxShadow: {
-          'focus-ring': '0 0 0 4px rgba(59,158,245,0.12)',
-        },
-        animation: {
-          'fade-in-scale': 'fadeInScale 1.5s ease-out forwards',
-          'fade-in-delay': 'fadeIn 1.5s ease-out 0.5s forwards',
-          'pulse-subtle': 'pulseSubtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        },
-        keyframes: {
-          fadeInScale: {
-            '0%': { opacity: '0', transform: 'scale(0.8)' },
-            '100%': { opacity: '1', transform: 'scale(1)' },
-          },
-          fadeIn: {
-            '0%': { opacity: '0' },
-            '100%': { opacity: '1' },
-          },
-          pulseSubtle: {
-            '0%, 100%': { opacity: '1' },
-            '50%': { opacity: '0.6' },
-          }
-        }
       }
-    },
-    // Keep default plugins and variants active
-  }
-</script>
-
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.1.1/",
-    "react": "https://aistudiocdn.com/react@^19.1.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.2.1"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+    </script>
+    <link rel="stylesheet" href="/index.css">
+  </head>
   <body class="bg-gray-100">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

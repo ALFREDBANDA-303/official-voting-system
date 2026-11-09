@@ -893,7 +893,7 @@ const ManagementModals: React.FC<ManagementModalsProps> = ({ modalState, onClose
                         entityType="Position"
                         entityName={data.name}
                         onConfirm={async () => {
-                            await sjbuApi.delete(`/positions/${data.id}`);
+                            await sjbuApi.delete(`/admin/positions/${data.id}`);
                             onRefreshData();
                             onClose();
                         }}
@@ -925,7 +925,7 @@ const ManagementModals: React.FC<ManagementModalsProps> = ({ modalState, onClose
                         entityType="Candidate"
                         entityName={data.name}
                         onConfirm={async () => {
-                            await sjbuApi.delete(`/positions/${data.positionId}/candidates/${data.id}`);
+                            await sjbuApi.delete(`/admin/candidate/${data.id}`);
                             onRefreshData();
                             onClose();
                         }}
@@ -959,7 +959,7 @@ const ManagementModals: React.FC<ManagementModalsProps> = ({ modalState, onClose
                                 alert("Error: Cannot deactivate the currently logged-in user.");
                                 return;
                             }
-                            await sjbuApi.delete(`/admin/${data.id}/deactivate`);
+                            await sjbuApi.delete(`/admin/users/${data.id}`);
                             onRefreshData();
                             onClose();
                         }}
@@ -986,9 +986,9 @@ const PositionForm = ({ type, position, onSuccess, onCancel }: { type: 'ADD_POSI
 
         try {
             if (type === 'ADD_POSITION') {
-                await sjbuApi.post('/positions', { position_name: name });
+                await sjbuApi.post('/admin/positions', { name });
             } else {
-                await sjbuApi.put(`/positions/${position!.id}`, { position_name: name });
+                await sjbuApi.put(`/admin/positions/${position!.id}`, { name });
             }
             onSuccess();
         } catch (err) {
@@ -1127,7 +1127,7 @@ const UserForm = ({ type, user, onSuccess, onCancel }: { type: 'ADD_USER' | 'EDI
             if (type === 'ADD_USER') {
                 await sjbuApi.post('/admin/create', dataToSave); 
             } else {
-                await sjbuApi.put(`/admin/${user!.id}/role`, { role: dataToSave.role }); 
+                await sjbuApi.put(`/admin/users/${user!.id}`, { role: dataToSave.role });
             }
             onSuccess();
         } catch (err) {

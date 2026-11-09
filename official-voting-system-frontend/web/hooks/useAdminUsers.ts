@@ -1,6 +1,7 @@
 // web/hooks/useAdminUsers.ts
 
 import { useState, useEffect, useCallback } from 'react';
+import { isAxiosError } from 'axios';
 import sjbuApi from '../src/api/sjbuApi';
 import { AdminUser } from '../types'; // Assuming AdminUser type is in types.ts
 
@@ -26,7 +27,7 @@ export const useAdminUsers = (): AdminUsersState => {
             setAdminUsers(response.data.admins || []);
         } catch (e) {
             let message = 'Failed to load admin users.';
-            if (sjbuApi.isAxiosError(e) && e.response?.status === 403) {
+            if (isAxiosError(e) && e.response?.status === 403) {
                  message = 'Insufficient permissions to view admin users.';
             }
             setError(message);

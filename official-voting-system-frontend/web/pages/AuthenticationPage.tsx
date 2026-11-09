@@ -54,6 +54,8 @@ const AuthenticationPage: React.FC<AuthenticationPageProps> = ({
             
             if (status === 401 || status === 400) {
                 errorReason = err.response.data.error || 'Invalid voucher code.';
+            } else if (status === 409) {
+                errorReason = err.response.data.error || 'This voucher has already been used to vote.';
             } else if (status === 429) {
                 errorReason = 'Too many requests. Please try again shortly.';
             }
