@@ -8,6 +8,7 @@ import Modal from '../components/Modal';
 import Spinner from '../components/Spinner';
 import sjbuApi from '../src/api/sjbuApi';
 import useElectionSchedule from '../hooks/useElectionSchedule';
+import { useOverallStats } from '../hooks/useOverallStats';
 
 interface VoteSelection {
   [positionId: number]: number;
@@ -22,6 +23,7 @@ interface VotingPageProps {
   userVoucher: string;
   setPage: (page: Page) => void;
   setVerificationCode: (code: string) => void;
+  setVoteStats: (stats: any[] | null) => void;
   isOffline: boolean;
 }
 
@@ -30,6 +32,7 @@ const VotingPage: React.FC<VotingPageProps> = ({
   userVoucher,
   setPage,
   setVerificationCode,
+  setVoteStats,
   isOffline,
 }) => {
   const [currentPositionIndex, setCurrentPositionIndex] = useState(0);
@@ -41,6 +44,7 @@ const VotingPage: React.FC<VotingPageProps> = ({
   const [modalCandidate, setModalCandidate] = useState<Candidate | null>(null);
 
   const { schedule, phase, loading: scheduleLoading } = useElectionSchedule(10000);
+  const { fetchStats: refreshStats } = useOverallStats();
 
   // Load saved selections
   useEffect(() => {
@@ -150,8 +154,14 @@ const handleSubmit = async () => {
     alert('✓ ' + message + '\n\nYour verification code: ' + verificationCode);
 
     setVerificationCode(verificationCode);
+    setVoteStats(data?.positionStats ?? null);
     localStorage.removeItem('dmi-vote-selections');
     setPage(Page.VoteSuccess);
+
+    // Refresh statistics immediately so live results reflect the vote just cast
+    if (refreshStats) {
+      refreshStats();
+    }
 
   } catch (err: any) {
     console.error('Submission failed:', err);

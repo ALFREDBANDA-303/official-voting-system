@@ -39,6 +39,7 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.Intro);
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [userVoucher, setUserVoucher] = useState<string>('');
+  const [voteStats, setVoteStats] = useState<any[] | null>(null);
 
   // Welcome Modal State — shows only once per user
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
@@ -219,9 +220,9 @@ const App: React.FC = () => {
       case Page.Authentication:
         return <AuthenticationPage onLoginSuccess={handleUserLoginSuccess} setPage={setCurrentPage} electionStatus={electionStatus} electionStartDate={electionStartDate} electionEndDate={electionEndDate} />;
       case Page.Voting:
-        return <VotingPage positions={livePositions as PositionWithCandidates[]} userVoucher={userVoucher} setPage={setCurrentPage} setVerificationCode={setVerificationCode} isOffline={isOffline} />;
+        return <VotingPage positions={livePositions as PositionWithCandidates[]} userVoucher={userVoucher} setPage={setCurrentPage} setVerificationCode={setVerificationCode} setVoteStats={setVoteStats} isOffline={isOffline} />;
       case Page.VoteSuccess:
-        return <VoteSuccessPage verificationCode={verificationCode} setPage={setCurrentPage} />;
+        return <VoteSuccessPage verificationCode={verificationCode} setPage={setCurrentPage} voteStats={voteStats} />;
       case Page.Verification:
         return <VerificationPage />;
       case Page.Results:

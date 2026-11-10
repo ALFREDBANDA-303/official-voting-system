@@ -260,13 +260,52 @@ const server = http.createServer(async (req, res) => {
       v.voted_positions = positionIds;
       dirty = true;
 
+      // ---- AUDIT LOG: record that a vote was cast (makes statistics auditable) ----
+      const auditId = db.audit_logs.length > 0 ? Math.max(...db.audit_logs.map(x => x.id)) + 1 : 1;
+      db.audit_logs.push({
+        id: auditId,
+        admin_username: 'system',
+        action: 'VOTE_CAST',
+        details: 'Voucher ' + b.voucher + ' cast vote for positions: ' + positionIds.join(', '),
+        ip_address: '127.0.0.1',
+        timestamp: now,
+      });
+      dirty = true;
+
+      // ---- Compute updated per-position vote statistics (reflects the vote just cast) ----
+      const positionStats = positionIds.map(posId => {
+        const position = db.positions.find(p => p.id === posId);
+        const positionVotes = db.votes.filter(v => v.position_id === posId);
+        const candidateBreakdown = db.candidates
+          .filter(c => c.position_id === posId)
+          .map(c => ({
+            candidateId: c.id,
+            candidateName: c.name,
+            voteCount: positionVotes.filter(v => v.candidate_id === c.id).length,
+          }))
+          .sort((a, b) => b.voteCount - a.voteCount);
+        return {
+          positionId: posId,
+          positionName: position ? position.name : 'Unknown',
+          totalVotes: positionVotes.length,
+          candidates: candidateBreakdown,
+        };
+      });
+
       const voteResults = {};
       for (const posId of positionIds) {
         const position = db.positions.find(p => p.id === posId);
         voteResults[position.name.toLowerCase().replace(/\s+/g, '_')] = { verification_code: code, candidate_id: parseInt(selections[posId]) };
       }
 
-      return sendJson(res, 200, { data: { verificationCode: code, message: 'All votes recorded successfully', votes: voteResults } });
+      return sendJson(res, 200, {
+        data: {
+          verificationCode: code,
+          message: 'All votes recorded successfully',
+          votes: voteResults,
+          positionStats: positionStats,
+        },
+      });
     }
 
     // ===== VOTE VERIFICATION =====
